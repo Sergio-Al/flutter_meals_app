@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:meals_app/models/meal.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class MealDetailsScreen extends StatelessWidget {
   const MealDetailsScreen({
