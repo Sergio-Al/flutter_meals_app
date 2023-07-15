@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 enum Filter { glutenFree, lactoseFree, vegetarian, vegan }
 
 class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key});
+  const FiltersScreen({super.key, required this.currentFilters});
+
+  final Map<Filter, bool> currentFilters;
 
   @override
   State<FiltersScreen> createState() {
@@ -18,6 +20,16 @@ class _FiltersScreenState extends State<FiltersScreen> {
   var _lactoseFreeFilterSet = false;
   var _vegetarianFreeFilterSet = false;
   var _veganFreeFilterSet = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _glutenFreeFilterSet = widget.currentFilters[Filter.glutenFree]!;
+    _lactoseFreeFilterSet = widget.currentFilters[Filter.lactoseFree]!;
+    _veganFreeFilterSet = widget.currentFilters[Filter.vegetarian]!;
+    _veganFreeFilterSet = widget.currentFilters[Filter.vegan]!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +54,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
             Navigator.of(context).pop({
               Filter.glutenFree: _glutenFreeFilterSet,
               Filter.lactoseFree: _lactoseFreeFilterSet,
-              Filter.vegetarian: _veganFreeFilterSet,
+              Filter.vegetarian: _vegetarianFreeFilterSet,
               Filter.vegan: _veganFreeFilterSet
             });
             return false;
@@ -101,13 +113,13 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   });
                 },
                 title: Text(
-                  'Vegetarian-free',
+                  'Vegetarian',
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                 ),
                 subtitle: Text(
-                  'Only include vegetarian-free meals',
+                  'Only include vegetarian meals',
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
@@ -123,13 +135,13 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   });
                 },
                 title: Text(
-                  'Vegan-free',
+                  'Vegan',
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                 ),
                 subtitle: Text(
-                  'Only include vegan-free meals',
+                  'Only include vegan meals',
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
