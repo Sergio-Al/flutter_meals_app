@@ -6,9 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/providers/filters_provider.dart';
 
 class FiltersScreen extends ConsumerStatefulWidget {
-  const FiltersScreen({super.key, required this.currentFilters});
-
-  final Map<Filter, bool> currentFilters;
+  const FiltersScreen({super.key});
 
   @override
   ConsumerState<FiltersScreen> createState() {
@@ -26,10 +24,12 @@ class _FiltersScreenState extends ConsumerState<FiltersScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _glutenFreeFilterSet = widget.currentFilters[Filter.glutenFree]!;
-    _lactoseFreeFilterSet = widget.currentFilters[Filter.lactoseFree]!;
-    _veganFreeFilterSet = widget.currentFilters[Filter.vegetarian]!;
-    _veganFreeFilterSet = widget.currentFilters[Filter.vegan]!;
+    final activeFilters = ref.read(
+        filtersProvider); // we avoid watch since this method only runs once
+    _glutenFreeFilterSet = activeFilters[Filter.glutenFree]!;
+    _lactoseFreeFilterSet = activeFilters[Filter.lactoseFree]!;
+    _veganFreeFilterSet = activeFilters[Filter.vegetarian]!;
+    _veganFreeFilterSet = activeFilters[Filter.vegan]!;
   }
 
   @override
@@ -52,13 +52,14 @@ class _FiltersScreenState extends ConsumerState<FiltersScreen> {
         // ),
         body: WillPopScope(
           onWillPop: () async {
-            Navigator.of(context).pop({
+            ref.read(filtersProvider.notifier).setFilters({
               Filter.glutenFree: _glutenFreeFilterSet,
               Filter.lactoseFree: _lactoseFreeFilterSet,
               Filter.vegetarian: _vegetarianFreeFilterSet,
               Filter.vegan: _veganFreeFilterSet
             });
-            return false;
+            // Navigator.of(context).pop();
+            return true;
           },
           child: Column(
             children: [
